@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমার ভিডিও গ্যালারী</title>
+    
+    <!-- CSS কোড -->
+    <style>
+        /* বেসিক রিসেট এবং ফন্ট */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+            background-color: #0f0f0f; /* ইউটিউবের ডার্ক ব্যাকগ্রাউন্ড */
+            color: #f1f1f1; /* ইউটিউবের টেক্সট কালার */
+            overflow-x: hidden; /* ডানে-বামে স্ক্রল হওয়া বন্ধ করতে */
+        }
+
+        /* হেডার স্টাইল - ইউটিউবের মতো */
+        header {
+            background-color: #212121;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #383838;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 24px;
+            fill: #ff0000;
+        }
+
+        .logo h1 {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* মূল কন্টেইনার */
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* ভিডিও গ্যালারী গ্রিড */
+        .video-gallery {
+            display: grid;
+            /* ছোট স্ক্রিনে ১ কলাম, মাঝারি স্ক্রিনে ২-৩ কলাম এবং বড় স্ক্রিনে ৪ কলাম */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* নতুন ভিডিও কার্ড ডিজাইন */
+        .video-card {
+            background-color: transparent;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, opacity 0.5s ease;
+            /* অ্যানিমেশনের জন্য প্রাথমিক অবস্থা */
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        /* হোভার ইফেক্ট */
+        .video-card:hover {
+            transform: scale(1.03);
+        }
+
+        /* অ্যানিমেশন প্রয়োগের জন্য ক্লাস */
+        .video-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ভিডিও এমবেড করার কন্টেইনার */
+        .video-embed {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 aspect ratio */
+            background-color: #333;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .video-embed iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ভিডিওর তথ্য (টাইটেল, চ্যানেল) */
+        .video-info {
+            padding: 12px 5px;
+        }
+
+        .video-info h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #f1f1f1;
+            margin-bottom: 6px;
+            /* লম্বা টেক্সট ছোট করার জন্য */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .video-info p {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+        
+        /* ছোট স্ক্রিনের জন্য মিডিয়া কোয়েরি */
+        @media (max-width: 768px) {
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+            .container {
+                padding: 0 15px;
+            }
+            .video-gallery {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HTML কন্টেন্ট -->
+    <header>
+        <div class="logo">
+            <!-- YouTube SVG Icon -->
+            <svg viewBox="0 0 28 20" preserveAspectRatio="xMidYMid meet" focusable="false">
+                <path d="M27.53,3.2s-0.3-2.1-1.2-3C25.23,0,22.63,0,22.63,0H5.37C5.37,0,2.77,0,1.67,0.2C0.77,1.1,0.47,3.2,0.47,3.2 S0.17,5.6,0.17,8v4c0,2.4,0.3,4.8,0.3,4.8s0.3,2.1,1.2,3c1.1,0.2,3.7,0.2,3.7,0.2h17.26c0,0,2.6,0,3.7-0.2c0.9-0.9,1.2-3,1.2-3 s0.3-2.4,0.3-4.8v-4C27.83,5.6,27.53,3.2,27.53,3.2z M11.17,13.2V4.8l7.6,4.2L11.17,13.2z"></path>
+            </svg>
+            <h1>আমার ভিডিও গ্যালারী</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="video-gallery">
+            
+            <!-- প্রতিটি ভিডিওর জন্য একটি করে কার্ড -->
+            <div class="video-card">
+                <div class="video-embed">
+                    <iframe src="https://www.youtube.com/embed/khZV0K1rIEA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3>ভিডিও শিরোনাম ১</h3>
+                    <p>চ্যানেলের নাম • 1M ভিউস • ১ সপ্তাহ আগে</p>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-embed">
+                    <iframe src="https://www.youtube.com/embed/eMFKqcYQQFk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3>ভিডিও শিরোনাম ২</h3>
+                    <p>চ্যানেলের নাম • 2.5M ভিউস • ২ সপ্তাহ আগে</p>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-embed">
+                    <iframe src="https://www.youtube.com/embed/CPH-u6RLOes" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3>ভিডিও শিরোনাম ৩</h3>
+                    <p>চ্যানেলের নাম • 500K ভিউস • ৩ দিন আগে</p>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-embed">
+                    <iframe src="https://www.youtube.com/embed/Q6VBO8o50lM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3>ভিডিও শিরোনাম ৪</h3>
+                    <p>চ্যানেলের নাম • 3M ভিউস • ১ মাস আগে</p>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-embed">
+                    <iframe src="https://www.youtube.com/embed/LNqaEU7RCRU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3>ভিডিও শিরোনাম ৫</h3>
+                    <p>চ্যানেলের নাম • 800K ভিউস • ৪ দিন আগে</p>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-embed">
+                    <iframe src="https://www.youtube.com/embed/tCY-pD8Q1x8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3>ভিডিও শিরোনাম ৬</h3>
+                    <p>চ্যানেলের নাম • 1.8M ভিউস • ২ মাস আগে</p>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-embed">
+                    <iframe src="https://www.youtube.com/embed/FmKe7MyPNx8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3>ভিডিও শিরোনাম ৭</h3>
+                    <p>চ্যানেলের নাম • 4.2M ভিউস • ৩ সপ্তাহ আগে</p>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-embed">
+                    <iframe src="https://www.youtube.com/embed/wzSTWbv7XlY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3>ভিডিও শিরোনাম ৮</h3>
+                    <p>চ্যানেলের নাম • 950K ভিউস • ৫ দিন আগে</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- JavaScript কোড -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // নতুন ক্লাস '.video-card' সিলেক্ট করা হয়েছে
+            const videoCards = document.querySelectorAll('.video-card');
+
+            videoCards.forEach((card, index) => {
+                // একটির পর একটি কার্ড আসার সুন্দর ইফেক্ট
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, index * 100); // ডিলে কিছুটা কমানো হয়েছে
+            });
+        });
+    </script>
+
+</body>
+</html>
